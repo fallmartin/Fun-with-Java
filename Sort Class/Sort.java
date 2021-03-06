@@ -11,22 +11,26 @@ package listing_23_5;
  */
 public class Sort {
 
-    public static void sort(int[] list, String algo) {
-        switch (algo) {
-            case "selection":
+    public static void sort(int[] list, char algorithmInitial) {
+        switch (algorithmInitial) {
+            case 'S': // Selection sort
                 System.out.println("\nSorting using selection sort...");
                 selectionSort(list);
                 break;
-            case "bubble":
+            case 'B': // Bubble sort
                 System.out.println("\nSorting using bubble sort...");
                 bubbleSort(list);
                 break;
-            case "insertion":
+            case 'I': // Insertion sort
                 System.out.println("\nSorting using insertion sort...");
                 insertionSort(list);
                 break;
-            case "merge":
+            case 'M': // Merge sort
                 System.out.println("\nSorting using merge sort...");
+                mergeSort(list);
+                break;
+            case 'Q': // Quick sort
+                System.out.println("\nSorting using quick sort...");
                 mergeSort(list);
                 break;
         }
@@ -149,6 +153,64 @@ public class Sort {
         }
     }
 
+    public static void quickSort(int[] list) {
+        quickSort(list, 0, list.length - 1);
+    }
+
+    public static void quickSort(int[] list, int first, int last) {
+        if (last > first) {
+            int pivotIndex = partition(list, first, last);
+            quickSort(list, 0, pivotIndex - 1);
+            quickSort(list, pivotIndex + 1, last);
+        }
+    }
+
+    /**
+     * Partition the array list[first..last].
+     *
+     * @param list
+     * @param first
+     * @param last
+     * @return
+     */
+    public static int partition(int[] list, int first, int last) {
+        int pivot = list[first]; // Choose the first element as the pivot
+        int low = first + 1; // Index for forward search
+        int high = last; // Index for backward search
+
+        while (high > low) {
+            // Search forward for the left
+            while (low <= high && list[low] <= pivot) {
+                low++;
+            }
+
+            // Search backward from the right
+            while (low <= high && list[high] > pivot) {
+                high--;
+            }
+
+            // Swap two elements in the list
+            if (high > low) {
+                int temp = list[high];
+                list[high] = list[low];
+                list[low] = temp;
+            }
+        }
+
+        while (high > first && list[high] >= pivot) {
+            high--;
+        }
+
+        // Swap pivot with list high
+        if (pivot > list[high]) {
+            list[first] = list[high];
+            list[high] = pivot;
+            return high;
+        } else {
+            return first;
+        }
+    }
+
     public static void printList(int[] list) {
         System.out.print("List: ");
         for (int i = 0; i < list.length; i++) {
@@ -166,7 +228,7 @@ public class Sort {
         int[] list = {2, 3, 2, 5, 6, 1, -2, 3, 14, 12};
         printList(list);
 
-        sort(list, "merge");
+        sort(list, 'Q');
         printList(list);
     }
 
